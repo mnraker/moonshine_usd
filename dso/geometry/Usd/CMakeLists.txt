@@ -7,7 +7,8 @@ moonray_dso_simple(UsdGeometry
         ${PROJECT_NAME}::geometry_usd
         SceneRdl2::common_platform
         SceneRdl2::scene_rdl2
-        usd)
+        usd
+        usdUtils)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL Intel)
     target_compile_options(UsdGeometry
