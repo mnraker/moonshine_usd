@@ -60,6 +60,16 @@ function(${PROJECT_NAME}_cxx_compile_options target)
                 -restrict
                 -Wno-deprecated                 # Usd uses deprecated headers.
         )
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        target_compile_options(${target}
+            # TODO: Some if not all of these should probably be PUBLIC
+            PRIVATE
+                /arch:AVX2                      # Specify the name of the target architecture
+                /Zc:__cplusplus                 # Make sure the preprocessor is defined to check for C++ version
+                /wd4293                         # '>>': shift count negative or too big, undefined behavior
+                /wd4083                         # pragma warning: push/pop/disable
+                /wd4616                         # pragma warning: warning number '1875' not a valid compiler warning
+        )
     endif()
 endfunction()
 
