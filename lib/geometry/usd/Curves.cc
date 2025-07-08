@@ -223,7 +223,14 @@ addScatterTag(const scene_rdl2::rdl2::Geometry *rdlGeometry,
     if (generateContext.requestAttribute(moonray::shading::StandardAttributes::sScatterTag)) {
         // Seed with geometry name so each primitive has a unique random
         // distribution associated with its curves
+#ifdef _MSC_VER
+        // TODO: Alex MSVC has some strange problem with ranlux24
+        // 'term does not evaluate to a function taking 0 arguments'
+        // Perhaps https://www.pcg-random.org/ can be used instead for platform stability too?
+        std::mt19937 generator(std::hash<std::string>{}(rdlGeometry->getName()));
+#else
         std::ranlux24 generator(std::hash<std::string>{}(rdlGeometry->getName()));
+#endif
         std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
 
         // add per curve scatter tag
